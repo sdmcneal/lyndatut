@@ -18,9 +18,29 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+var options = {
+  root: __dirname + '/'
+}
+
+console.log(options);
+
+app.use('/responsive', function(req, res) {
+  res.sendFile('responsive.html',options, function(err) {
+    if (err) {
+      console.log(err);
+      res.status(err.status).end();
+    }
+    else {
+      console.log('sent responsive.html');
+    }
+  });
+})
 
 app.use('/', routes);
 app.use('/users', users);
